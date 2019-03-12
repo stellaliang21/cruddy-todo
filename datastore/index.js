@@ -52,11 +52,11 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  fs.readFile(exports.dataDir + '/' + id  + '.txt', (err, data) => {
+  fs.readFile(exports.dataDir + '/' + id + '.txt', (err, data) => {
     if (err) {
       callback(new Error(`No item with id: ${id}`));
     } else {
-      fs.writeFile(exports.dataDir + '/' + id  + '.txt', text, (err) => {
+      fs.writeFile(exports.dataDir + '/' + id + '.txt', text, (err) => {
         if (err) {
           callback(new Error(`No item with id: ${id}`));
         } else {
@@ -64,18 +64,26 @@ exports.update = (id, text, callback) => {
         }
       });
     }
-  })  
+  });  
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+  fs.unlink(`${exports.dataDir}/${id}.txt`, (err) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      callback()
+      console.log('file was deleted')
+    }
+  })
+  // var item = items[id];
+  // delete items[id];
+  // if (!item) {
+  //   // report an error if item not found
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   callback();
+  // }
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
