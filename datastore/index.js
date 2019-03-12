@@ -40,25 +40,31 @@ exports.readAll = (callback) => {
 
 exports.readOne = (id, callback) => {
   //var text = items[id];
-    fs.readFile(path.join(exports.dataDir, `${id}.txt`), (err, data) => {
-      if (err) {
-        callback(new Error(`No item with id: ${id}`));
-      } else {
-        text = data.toString()
-        callback(null, {id, text});
-      }
+  fs.readFile(path.join(exports.dataDir, `${id}.txt`), (err, data) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      text = data.toString();
+      callback(null, {id, text});
+    }
    
-    });
+  });
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  fs.readFile(exports.dataDir + '/' + id  + '.txt', (err, data) => {
+    if (err) {
+      callback(new Error(`No item with id: ${id}`));
+    } else {
+      fs.writeFile(exports.dataDir + '/' + id  + '.txt', text, (err) => {
+        if (err) {
+          callback(new Error(`No item with id: ${id}`));
+        } else {
+          callback(null, { id, text });
+        }
+      });
+    }
+  })  
 };
 
 exports.delete = (id, callback) => {
