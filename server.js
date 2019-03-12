@@ -24,7 +24,6 @@ app.post('/todo', (req, res) => {
     if (err) {
       res.sendStatus(400);
     } else {
-      console.log(newTodo);
       res.status(201).json(newTodo);
     }
   });
