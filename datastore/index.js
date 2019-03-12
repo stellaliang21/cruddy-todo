@@ -28,27 +28,27 @@ exports.readAll = (callback) => {
     if (err) {
       throw ('unable to read data');
     } else {
-      var data =_.map(files, (id) => {
-        id = id.substring(0,5);
-        text = id.substring(0,5);
-         return {id, text};
+      var data = _.map(files, (id) => {
+        id = id.substring(0, 5);
+        text = id.substring(0, 5);
+        return {id, text};
       });
       callback (null, data);
     }
   });
-  // var data = _.map(items, (text, id) => {
-  //   return { id, text };
-  // });
-  // callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  //var text = items[id];
+    fs.readFile(path.join(exports.dataDir, `${id}.txt`), (err, data) => {
+      if (err) {
+        callback(new Error(`No item with id: ${id}`));
+      } else {
+        text = data.toString()
+        callback(null, {id, text});
+      }
+   
+    });
 };
 
 exports.update = (id, text, callback) => {
